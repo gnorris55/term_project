@@ -1,4 +1,2 @@
 ﻿  main.cpp
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-main.obj : error LNK2001: unresolved external symbol glad_glClear
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\x64\Debug\Term project.exe : fatal error LNK1120: 1 unresolved externals
+  Term project.vcxproj -> C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\x64\Debug\Term project.exe

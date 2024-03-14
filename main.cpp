@@ -1,4 +1,8 @@
 #define STB_IMAGE_IMPLEMENTATION
+#define GLM_ENABLE_EXPERIMENTAL
+#define GLM_FORCE_SWIZZLE
+#define GLM_SWIZZLE_XYZW
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -6,12 +10,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Shader.h"
-#include "Camera.h"
-#include "Raw_Model.h"
+#include <learnopengl/Shader.h>
+#include <learnopengl/Camera.h>
+#include <learnopengl/Raw_Model.h>
+#include <headers/ragdoll.h>
 
 #include <iostream>
-#include <filesystem>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -79,16 +83,10 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader ourShader("model_loading.vs", "model_loading.fs");
+    Shader ourShader("default_shader.vs", "default_fragment_shader.fs");
 
-    // load models
-    // -----------
-    std::string filename = "backpack/backpack.obj";
-    Model ourModel(filename.c_str());
+    Ragdoll prototype_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "test1.txt", &ourShader);
 
-
-    // draw in wireframe
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // render loop
     // -----------
@@ -111,23 +109,18 @@ int main()
 
         // don't forget to enable shader before setting uniforms
         ourShader.use();
-
+        ourShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+        ourShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+        ourShader.setVec3("lightPos", 0.0f, 50.0f, 0.0f);
+        ourShader.setVec3("viewPos", camera.Position);
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
-        // render the loaded model
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", model);
-        ourModel.Draw(ourShader);
+        prototype_ragdoll.draw_bones();
 
-
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

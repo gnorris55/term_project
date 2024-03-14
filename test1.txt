@@ -1,0 +1,11 @@
+ragdoll_prot
+particle -1 0 -1
+particle 0.5 0 1
+particle 1 0 -1
+particle 0 1 0
+particle 0 -1 0
+
+
+bone 0 1 2 3
+bone 0 1 2 4
+set joint 0 1

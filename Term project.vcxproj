@@ -151,19 +151,34 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assimp_Shader.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="Loader.h" />
-    <ClInclude Include="Raw_Model.h" />
-    <ClInclude Include="main.h" />
+    <ClInclude Include="include\headers\ragdoll.h" />
+    <ClInclude Include="include\learnopengl\Animation.h" />
+    <ClInclude Include="include\learnopengl\Animator.h" />
+    <ClInclude Include="include\learnopengl\Anim_data.h" />
+    <ClInclude Include="include\learnopengl\Assimp_glm_helpers.h" />
+    <ClInclude Include="include\learnopengl\Assimp_Shader.h" />
+    <ClInclude Include="include\learnopengl\Bone.h" />
+    <ClInclude Include="include\learnopengl\Camera.h" />
+    <ClInclude Include="include\learnopengl\Loader.h" />
+    <ClInclude Include="include\learnopengl\main.h" />
+    <ClInclude Include="include\learnopengl\Mesh.h" />
+    <ClInclude Include="include\learnopengl\model.h" />
+    <ClInclude Include="include\learnopengl\Model_animation.h" />
+    <ClInclude Include="include\learnopengl\Raw_Model.h" />
+    <ClInclude Include="include\learnopengl\Shader.h" />
+    <ClInclude Include="Model_animation.h" />
+    <ClInclude Include="Physics_Manager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="animation.fs" />
+    <None Include="animation.vs" />
     <None Include="default_fragment_shader.fs" />
     <None Include="default_shader.vs" />
     <None Include="model_loading.fs" />
     <None Include="model_loading.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="test1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

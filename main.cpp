@@ -14,6 +14,7 @@
 #include <learnopengl/Camera.h>
 #include <learnopengl/Raw_Model.h>
 #include <headers/ragdoll.h>
+#include <headers/Ragdoll_Simulator.h>
 
 #include <iostream>
 
@@ -85,9 +86,9 @@ int main()
     // -------------------------
     Shader ourShader("default_shader.vs", "default_fragment_shader.fs");
 
-    Ragdoll prototype_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "test1.txt", &ourShader);
-
-
+    Ragdoll in_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "human.txt", &ourShader);
+    //RagdollSimulator simulator = RagdollSimulator(&ourShader, &in_ragdoll);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -119,7 +120,7 @@ int main()
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
-        prototype_ragdoll.draw_bones();
+        in_ragdoll.draw_bones(currentFrame);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

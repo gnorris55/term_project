@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\headers\ragdoll.h" />
+    <ClInclude Include="include\headers\Ragdoll_Simulator.h" />
     <ClInclude Include="include\learnopengl\Animation.h" />
     <ClInclude Include="include\learnopengl\Animator.h" />
     <ClInclude Include="include\learnopengl\Anim_data.h" />
@@ -167,7 +168,6 @@
     <ClInclude Include="include\learnopengl\Raw_Model.h" />
     <ClInclude Include="include\learnopengl\Shader.h" />
     <ClInclude Include="Model_animation.h" />
-    <ClInclude Include="Physics_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="animation.fs" />

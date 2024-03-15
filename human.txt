@@ -1,0 +1,100 @@
+skeleton
+//left hip
+//0
+particle -3 0 0
+particle 0 0 1
+particle 0 0 -1
+particle 0 2 0
+
+//right hip
+//1
+particle 3 0 0
+particle 0.01 0 1 
+particle 0.01 0 -1
+particle 0.01 2 0
+
+// lower spine
+//2
+particle 0 2.01 0
+particle 1 3 1
+particle -1 3 1
+particle 0 3 -1 
+
+//upper spine
+//3
+particle 1 3.01 1
+particle -1 3.01 1
+particle 0 3.01 -1
+particle 0 8 0 
+//4
+particle 0 8.01 0
+particle 1 9 1
+particle -1 9 1
+particle 0 9 -1 
+
+//legs
+//left leg
+//5
+particle -3.01 0 0
+particle -2.5 -8 1
+particle -3.5 -8 1
+particle -3.0 -8 -1
+//6
+particle -3.01 -8 -1
+particle -2.51 -8 1
+particle -3.51 -8 1
+particle -3.0 -16 0
+
+//7
+particle -3.01 -16 0
+particle -2.5 -16 2
+particle -3.5 -16 2
+particle -3 -15 2
+
+// right leg
+//8
+particle 3.01 0 0
+particle 2.5 -8 1
+particle 3.5 -8 1
+particle 3.0 -8 -1
+
+//9
+particle 3.01 -8 -1
+particle 2.51 -8 1
+particle 3.51 -8 1
+particle 3.0 -16 0
+
+//10
+particle 3.01 -16 0
+particle 2.5 -16 2
+particle 3.5 -16 2
+particle 3 -15 2
+
+//10
+
+bone 0 1 2 3 
+bone 4 5 6 7
+bone 8 9 10 11
+bone 12 13 14 15
+bone 16 17 18 19
+bone 20 21 22 23
+bone 24 25 26 27
+bone 28 29 30 31
+bone 32 33 34 35
+bone 36 37 38 39
+bone 40 41 42 43
+
+//upper body joints
+joint 0 1 3
+joint 1 2 1
+joint 2 3 3
+joint 3 4 1
+
+//lower body joints
+joint 0 5 1
+joint 5 6 3
+joint 6 7 1
+
+joint 1 8 1
+joint 8 9 3
+joint 9 10 1

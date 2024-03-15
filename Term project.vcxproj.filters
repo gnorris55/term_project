@@ -71,7 +71,7 @@
     <ClInclude Include="include\learnopengl\model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Physics_Manager.h">
+    <ClInclude Include="include\headers\Ragdoll_Simulator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

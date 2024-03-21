@@ -86,7 +86,7 @@ int main()
     // -------------------------
     Shader ourShader("default_shader.vs", "default_fragment_shader.fs");
 
-    Ragdoll in_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "human.txt", &ourShader);
+    Ragdoll in_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "hinge-test.txt", &ourShader);
     //RagdollSimulator simulator = RagdollSimulator(&ourShader, &in_ragdoll);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     // render loop

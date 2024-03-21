@@ -1,0 +1,2 @@
+bug list 
+1. particles at same position disapear

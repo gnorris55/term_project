@@ -20,6 +20,11 @@ struct Spring_Constraints {
 
 struct Joint {
 	std::vector<int> particles;
+	std::vector<int> bones;
+	int ref_a;
+	int ref_b;
+	std::vector<glm::vec4> plane1;
+	std::vector<glm::vec4> plane2;
 	std::vector<Spring_Constraints> particle_constraints;
 };
 
@@ -34,7 +39,7 @@ struct Bone {
 	// should always have 4  particles so that the bone forms a tetrahedron
 	std::vector<int> particles;
 	std::vector<Spring_Constraints> particle_constraints;
-	
+	glm::mat4 local_coord_matrix;
 };
 
 class Ragdoll {
@@ -50,7 +55,7 @@ public:
 	
 	void draw_bones(float delta_time) {
 		
-		std::vector<glm::vec4> forces(particles.size());
+
 		for (int i = 0; i < particles.size(); i++) {
 			
 			Particle particle = particles[i];
@@ -58,19 +63,25 @@ public:
 			//get all springs attached to a particle and calculate the physics
 			glm::vec4 strut_forces = get_strut_forces_on_particle(particle, i);
 			forces[i] = strut_forces;
+			handle_joint_bone_constraints();
 			//std::cout << glm::to_string(strut_forces) << "\n";
 		}
+
 		for (int i = 0; i < particles.size(); i++) {
 			Particle& particle = particles[i];
 			glm::vec4 force_value = forces[i];
-			if (i == 17) continue;
+			if (i < 4) continue;
 			symplectic_integration(particle, force_value);
 
 			//std::cout << glm::to_string(particles[i].position) << "\n";
 		}
+
 		for (int i = 0; i < bones.size(); i++) {
 
+
 			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, glm::vec3(0, 0, -30));
+			glUniform3fv(glGetUniformLocation(program->ID, "objectColor"), 1, glm::value_ptr(glm::vec3(1.0, 0.0, 0.0)));
 			glUniformMatrix4fv(glGetUniformLocation(program->ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 			update_bone_models();
 			renderer.render(bone_models[i], GL_TRIANGLES);
@@ -89,6 +100,7 @@ private:
 	
 	void symplectic_integration(Particle& particle, glm::vec4 force_value) {
 		//std::cout << glm::to_string(force_value) << "\n";
+		//TODO add a good mass
 		glm::vec4 new_velocity = particle.velocity + time_step * force_value;
 		glm::vec4 new_pos = particle.position + (float)(time_step)*new_velocity;
 		//std::cout << glm::to_string(new_velocity) << "\n";
@@ -97,32 +109,132 @@ private:
 
 	}
 
+	void draw_plane(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, glm::mat4 local_coord_matrix) {
+		glm::vec4 pw0 = p1 * glm::inverse(local_coord_matrix);
+		glm::vec4 pw1 = p2 * glm::inverse(local_coord_matrix);
+		glm::vec4 pw2 = p3 * glm::inverse(local_coord_matrix);
+		// creating a plan for debugging
+		float vertices[3 * 3] = {
+			pw0.x, pw0.y, pw0.z,			
+			pw1.x, pw1.y, pw1.z,
+			pw2.x, pw2.y, pw2.z,
+			//pw0.x, pw0.y, pw0.z,
+		};
+		
+		float normals[4 * 3];
+	
+		//loader.loadToVAO(input_vertices, normals, num_vertices * sizeof(float));
+		glUniform3fv(glGetUniformLocation(program->ID, "objectColor"), 1, glm::value_ptr(glm::vec3(0.0, 1.0, 0.0)));
+		RawModel plane1 = loader.loadToVAO(vertices, normals, (9) * sizeof(float));
+		renderer.render(plane1, GL_TRIANGLES);
+
+	}
+
+	glm::vec4 handle_hinge_constraints(Joint& joint) {
+		Bone boneA = bones[joint.bones[0]];
+		Bone boneB = bones[joint.bones[1]];
+
+		//glm::vec4 b  = boneA.local_coord_matrix * particles[joint.ref_b].position ;
+		glm::vec4 b  = particles[joint.ref_b].position * boneA.local_coord_matrix;
+		std::cout << glm::to_string(boneA.local_coord_matrix) << "\n";
+		draw_plane(joint.plane2[0], joint.plane2[1], joint.plane2[2], boneA.local_coord_matrix);
+		draw_plane(joint.plane1[0], joint.plane1[1], joint.plane1[2], boneA.local_coord_matrix);
+		
+		glm::vec3 diff = glm::normalize(b - joint.plane1[0]);
+		float plane_val1 = glm::dot(diff.xyz(), joint.plane1[3].xyz());
+		
+		diff = glm::normalize(b - joint.plane2[0]);
+		float plane_val2 = glm::dot(diff.xyz(), joint.plane2[3].xyz());
+
+		std::cout << "ref a: " << joint.ref_a << "\n";
+		std::cout << "ref b: " << joint.ref_b << "\n";
+		if (plane_val1 < 0 || plane_val2 < 0) {
+			float length;
+			Particle line_constraint_particle;
+			if (plane_val1 < 0) {
+				std::cout << "violated plane 1 constraint\n";
+				line_constraint_particle.position = joint.plane1[0] * glm::inverse(boneA.local_coord_matrix);
+				line_constraint_particle.velocity = glm::vec4(0, 0, 0, 0);
+			}
+			if (plane_val2 < 0) {
+				std::cout << "violated plane 2 constraint\n";
+				line_constraint_particle.position = joint.plane2[0] * glm::inverse(boneA.local_coord_matrix);
+				line_constraint_particle.velocity = glm::vec4(0, 0, 0, 0);
+			}
+
+
+
+			//glm::vec4 refAForce = get_force_for_spring(particles[joint.ref_a], line_constraint_particle, 0, 200, 20);
+			glm::vec4 refBForce = get_force_for_spring(particles[joint.ref_b], line_constraint_particle, 0, 200, 20);
+			//std::cout << glm::to_string(refAForce) << "\n";
+			//forces[joint.ref_a] = forces[joint.ref_a] + refAForce;
+			forces[joint.ref_b] = forces[joint.ref_b] + refBForce;
+
+			//glm::vec4 joint_force = total_strut_force + get_force_for_spring(, particles[constraint.index2], constraint.length, stiffness, dampness);
+		}
+
+
+		return glm::vec4(0,0,0,0);
+	}
+
+	void handle_joint_bone_constraints() {
+		for (Bone& boneA : bones) {
+			glm::vec4 p1 = particles[boneA.particles[0]].position;
+			glm::vec4 p2 = particles[boneA.particles[1]].position;
+			glm::vec4 p3 = particles[boneA.particles[2]].position;
+			glm::vec4 p4 = particles[boneA.particles[3]].position;
+
+			//std::cout << glm::to_string(p1) << " " << glm::to_string(p2) << "\n";
+			glm::vec3 x_axis = glm::normalize(p2 - p1).xyz();
+			glm::vec3 y_axis = glm::normalize(glm::cross(x_axis, (p3 - p1).xyz()));
+			glm::vec3 z_axis = glm::cross(x_axis, y_axis);
+
+			glm::mat4 local_coords = glm::mat4(glm::vec4(x_axis.x, y_axis.x, z_axis.x, p1.x),
+				glm::vec4(x_axis.y, y_axis.y, z_axis.y, p1.y),
+				glm::vec4(x_axis.z, y_axis.z, z_axis.z, p1.z),
+				glm::vec4(0, 0, 0, 1));
+
+			boneA.local_coord_matrix = glm::inverse(local_coords);
+		}
+		
+		for (Joint& joint : joints) {
+			if (joint.particles.size() == 4) {
+				handle_hinge_constraints(joint);
+			}
+		}
+	}
+	
 	glm::vec4 get_strut_forces_on_particle(Particle particle, int index) {
-		glm::vec4 total_strut_force = glm::vec4(0, -0.98, 0, 0) + particle.velocity * -0.05f;
+		glm::vec4 total_strut_force = glm::vec4(0, -9.8, 0, 0) + particle.velocity * -0.05f;
 
 		//glm::vec4 total_strut_force = glm::vec4(0, 0, 0, 0);
-	
+		float stiffness = 10000;
+		float dampness = 20;
 		for (int joint_index : particle.joints) {
-			for (auto constraint : joints[joint_index].particle_constraints) {
+			Joint joint = joints[joint_index];
+			for (auto constraint : joint.particle_constraints) {
 				if (constraint.index1 == index) {
-					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index2], constraint.length, 200, 20);
+					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index2], constraint.length, stiffness, dampness);
 				}
 				else if (constraint.index2 == index) {
-					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index1], constraint.length, 200, 20);
+					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index1], constraint.length, stiffness, dampness);
 				}
 			}
 		}
 
 		for (int bone_index : particle.bones) {
-			std::cout << "curr_index: " << index << "\n";
+			//std::cout << "curr_index: " << index << "\n";
 			for (auto constraint : bones[bone_index].particle_constraints) {
 				if (constraint.index1 == index) {
-					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index2], constraint.length, 200, 20);
+					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index2], constraint.length, stiffness, dampness);
 				}
 				else if (constraint.index2 == index) {
-					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index1], constraint.length, 200, 20);
+					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index1], constraint.length, stiffness, dampness);
 				}
 			}
+
+			// move local system
+
 		}
 		return total_strut_force;
 	}
@@ -201,10 +313,94 @@ private:
 					create_joint((int)inputNums[0], (int)inputNums[1], inputNums[2]);
 				}
 			}
+			forces = std::vector<glm::vec4>(particles.size());
 		}
 		else {
 			std::cout << "could not open file\n";
 		}
+	}
+	
+	void create_hinge_rotation_planes(Joint &joint) {
+		Bone boneA = bones[joint.bones[0]];
+		Bone boneB = bones[joint.bones[1]];
+
+		/*
+		std::cout << "local coords should stay the same no matter\n";
+		for (int particle_index : boneB.particles) {
+			std::cout << "world coords: " << glm::to_string(particles[particle_index].position) << "\n";
+			std::cout << "local coords: " << glm::to_string(particles[particle_index].position * boneA.local_coord_matrix) << "\n";
+		}*/
+		
+		glm::vec4 a;
+		glm::vec4 b;
+
+		// make sure that a is not a hinge particle
+		for (int i = 0; i < boneA.particles.size(); i++) {
+			bool is_hinge = false;
+			for (int j = 0; j < joint.particles.size(); j++) {
+				if (boneA.particles[i] == joint.particles[j]) {
+					is_hinge = true;
+					break;
+				}
+			}
+			if (!is_hinge) 
+				a = particles[boneA.particles[i]].position * boneA.local_coord_matrix;
+				joint.ref_a = boneA.particles[i];
+		}
+
+		for (int i = 0; i < boneB.particles.size(); i++) {
+			bool is_hinge = false;
+			for (int j = 0; j < joint.particles.size(); j++) {
+				if (boneB.particles[i] == joint.particles[j]) {
+					is_hinge = true;
+					break;
+				}
+			}
+			if (!is_hinge) {
+				b = particles[boneB.particles[i]].position * boneA.local_coord_matrix;
+
+				joint.ref_b = boneB.particles[i];
+			}
+		}
+
+			//	glm::vec4 b = particles[boneB.particles[i]].position * boneA.local_coord_matrix;
+		glm::vec4 hinge_particle1 = particles[joint.particles[0]].position * boneA.local_coord_matrix;
+		glm::vec4 hinge_particle2 = particles[joint.particles[2]].position * boneA.local_coord_matrix;
+
+		
+		glm::vec4 hinge_axis = glm::normalize((hinge_particle1 - hinge_particle2));
+		glm::vec4 rotation_b = (b - hinge_axis);
+		glm::vec3 rotation_axis = glm::cross(hinge_axis.xyz(), glm::normalize(b).xyz());
+		
+		glm::mat4 rot_positive = glm::mat4(1.0f);
+		rot_positive = glm::rotate(rot_positive, glm::radians(45.0f), hinge_axis.xyz());
+		
+		glm::mat4 rot_negative = glm::mat4(1.0f);
+		rot_negative = glm::rotate(rot_negative, glm::radians(-10.0f), hinge_axis.xyz());
+		
+		glm::vec4 plane_positive_point = (rotation_b * rot_positive) + hinge_axis;
+		glm::vec4 plane_negative_point = (rotation_b * rot_negative) + hinge_axis;
+		std::cout << "spot: " << glm::to_string(plane_positive_point - hinge_particle1) << "\n";
+		glm::vec3 positive_normal = glm::normalize(glm::cross((plane_positive_point - hinge_particle1).xyz(), (plane_positive_point - hinge_particle2).xyz()));
+		glm::vec3 negative_normal = glm::normalize(glm::cross((plane_negative_point - hinge_particle1).xyz(), (plane_negative_point - hinge_particle2).xyz()));
+
+		joint.plane1.push_back(plane_positive_point);
+		joint.plane1.push_back(hinge_particle1);
+		joint.plane1.push_back(hinge_particle2);
+		joint.plane1.push_back(-1.0f*glm::vec4(positive_normal, 0));
+		
+		joint.plane2.push_back(plane_negative_point);
+		joint.plane2.push_back(hinge_particle1);
+		joint.plane2.push_back(hinge_particle2);
+		joint.plane2.push_back(glm::vec4(negative_normal, 0));
+		
+		std::cout << glm::to_string(rotation_b) << "\n";
+
+		std::cout << "b: " << glm::to_string(b) << "\n";
+		std::cout << "positive rotation: " << glm::to_string(rotation_b * rot_positive) << "\n";
+		std::cout << "negative rotation: " << glm::to_string(rotation_b * rot_negative) << "\n";
+
+		std::cout << joint.ref_b << "\n";
 	}
 
 	void create_joint(int bone_index1, int bone_index2, int connections) {
@@ -214,6 +410,10 @@ private:
 		std::vector<Spring_Constraints> constraints;
 		std::vector<int> particle_index;
 		Joint new_joint;
+		new_joint.bones.push_back(bone_index1);
+		new_joint.bones.push_back(bone_index2);
+		
+
 		std::map<int, bool> used;
 		float smallest = 10000.0;
 		int min_i = 0;
@@ -245,8 +445,9 @@ private:
 			used[min_i] = true;
 			used[min_j] = true;
 			smallest = 10000;
-
 		}
+		if (new_joint.particles.size() == 4)
+			create_hinge_rotation_planes(new_joint);
 		joints.push_back(new_joint);
 		for (auto joint : joints) {
 			for (int i : joint.particles)
@@ -260,8 +461,7 @@ private:
 		glm::vec4 edge2 = p3 - p1;
 		glm::vec3 normal = glm::cross(edge1.xyz(), edge2.xyz());
 		
-		/*
-		for (int i = arr_index; i < arr_index + 3; i++) {
+		/*for (int i = arr_index; i < arr_index + 3; i++) {
 			normals[i*3] = normal.x;
 			normals[i*3+1] = normal.y;
 			normals[i*3+2] = normal.z;
@@ -289,8 +489,18 @@ private:
 		glm::vec4 p2 = particles[particle_list[1]].position;
 		glm::vec4 p3 = particles[particle_list[2]].position;
 		glm::vec4 p4 = particles[particle_list[3]].position;
+
+		glm::vec3 x_axis = glm::normalize(p2 - p1).xyz();
+		glm::vec3 y_axis = glm::normalize(glm::cross(x_axis, (p3 - p1).xyz()));
+		glm::vec3 z_axis = glm::cross(x_axis, y_axis);
+
+		glm::mat4 local_coords = glm::mat4(glm::vec4(x_axis.x, y_axis.x, z_axis.x, p1.x),
+			glm::vec4(x_axis.y, y_axis.y, z_axis.y, p1.y),
+			glm::vec4(x_axis.z, y_axis.z, z_axis.z, p1.z),
+			glm::vec4(0, 0, 0, 1));
 	
 		Bone new_bone;
+		new_bone.local_coord_matrix = glm::inverse(local_coords);
 	    new_bone.particle_constraints.push_back(get_spring_constraint(p1 - p2, particle_list[0], particle_list[1]));
 	    new_bone.particle_constraints.push_back(get_spring_constraint(p1 - p3, particle_list[0], particle_list[2]));
 		new_bone.particle_constraints.push_back(get_spring_constraint(p2 - p3, particle_list[1], particle_list[2]));
@@ -324,7 +534,7 @@ private:
 		Spring_Constraints new_constraint;
 		new_constraint.index1 = index1;
 		new_constraint.index2 = index2;
-		new_constraint.length = abs(glm::length(length))*0.95f;
+		new_constraint.length = abs(glm::length(length));
 		return new_constraint;
 	}
 

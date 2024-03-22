@@ -10,13 +10,13 @@ particle 0.02 2 0
 particle 3 0 0
 
 particle 3.01 0 0
-particle 4 0 1
-particle 4 0 -1
-particle 4 1 0 
+particle 4 1 1
+particle 4 1 -1
+particle 4 0 0 
 
-particle 4.01 0 1
-particle 4.01 0 -1
-particle 4.02 1 0 
+particle 4.01 1 1
+particle 4.01 1 -1
+particle 4.02 0 0 
 particle 6 0 0
 
 bone 0 1 2 3

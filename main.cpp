@@ -86,9 +86,7 @@ int main()
     // -------------------------
     Shader ourShader("default_shader.vs", "default_fragment_shader.fs");
 
-    //Ragdoll in_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "ball-joint-test.txt", &ourShader);
-    Ragdoll in_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "leg-test.txt", &ourShader);
-    //RagdollSimulator simulator = RagdollSimulator(&ourShader, &in_ragdoll);
+    Ragdoll in_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "human.txt", &ourShader);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     // render loop
     // -----------

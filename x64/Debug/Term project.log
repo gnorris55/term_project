@@ -1,61 +1,56 @@
 ﻿  main.cpp
 C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(108,20): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(164,98): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(187,10): warning C4101: 'length': unreferenced local variable
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(344,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(189,10): warning C4101: 'length': unreferenced local variable
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(337,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(344,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(337,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(345,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(338,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(345,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(338,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(346,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(339,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(346,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(339,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(347,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(340,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(347,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(340,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(352,68): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
-          with
-          [
-              _Ty=float
-          ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(552,49): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(526,49): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(553,49): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(527,49): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
           with
           [
               _Ty=int
           ]
 C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\Ragdoll_Simulator.h(18,7): warning C4552: '*': result of expression not used
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Term project.vcxproj -> C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\x64\Debug\Term project.exe

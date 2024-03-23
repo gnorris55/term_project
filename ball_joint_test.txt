@@ -1,0 +1,23 @@
+ball-joint
+
+particle 1 0 -1
+particle -1 0 -1
+particle 0 0 0
+particle 0 2 0
+
+particle 1 4 -1
+particle -1 4 -1
+particle 0 4 0
+particle 0 2 0
+
+particle 1 4.01 -1
+particle -1 4.01 -1
+particle 0 4.01 0
+particle 0 8 0
+
+bone 0 1 2 3
+bone 4 5 6 7
+bone 8 9 10 11
+
+joint 0 1 1 20
+joint 1 2 3

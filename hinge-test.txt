@@ -4,19 +4,19 @@ particle 0 0 -1
 particle 0 2 0
 particle -3 0 0
 
-particle 0.01 0 1 
-particle 0.01 0 -1
-particle 0.02 2 0
+particle 0 0 1 
+particle 0 0 -1
+particle 0.01 2 0
 particle 3 0 0
 
-particle 3.01 0 0
+particle 3 0 0
 particle 4 1 1
 particle 4 1 -1
 particle 4 0 0 
 
-particle 4.01 1 1
-particle 4.01 1 -1
-particle 4.02 0 0 
+particle 4 1 1
+particle 4 1 -1
+particle 4.01 0 0 
 particle 6 0 0
 
 bone 0 1 2 3
@@ -24,6 +24,6 @@ bone 4 5 6 7
 bone 8 9 10 11
 bone 12 13 14 15
 
-joint 0 1 2
-joint 1 2 1
-joint 2 3 2
+joint 0 1 2 80 -10 
+joint 1 2 1 45
+joint 2 3 2 45 -50

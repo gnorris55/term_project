@@ -43,6 +43,7 @@ struct Particle {
 	glm::vec4 velocity;
 	std::vector<int> bones;
 	std::vector<int> joints;
+	float mass;
 };
 
 struct Bone {
@@ -68,9 +69,10 @@ public:
 
 		for (int i = 0; i < particles.size(); i++) {
 			
-			Particle particle = particles[i];
+			//Particle particle = particles[i];
 
-			glm::vec4 strut_forces = get_strut_forces_on_particle(particle, i);
+			if (i < 4) continue;
+			glm::vec4 strut_forces = get_strut_forces_on_particle(particles[i], i);
 			forces[i] = strut_forces;
 			handle_joint_bone_constraints();
 		}
@@ -78,7 +80,6 @@ public:
 		for (int i = 0; i < particles.size(); i++) {
 			Particle& particle = particles[i];
 			glm::vec4 force_value = forces[i];
-			if (i == 3) continue;
 			//symplectic_integration(particle, force_value);
 			verlet_integration(particle, last_positions[i], force_value);
 			
@@ -144,28 +145,55 @@ private:
 
 	}
 	
+	glm::vec4 world_coord(glm::vec4 pos, glm::mat4 localMatrix) {
+		return pos * glm::inverse(localMatrix);
+	}
+
 	void handle_ball_joint_constraints(Joint& joint) {
 	
 		Bone boneA = bones[joint.bones[0]];
 		Bone boneB = bones[joint.bones[1]];
 
 		glm::vec4 b = particles[joint.ref_b].position * boneA.local_coord_matrix;
-		
+
 		float base_radius = tan(glm::radians(joint.cone_angle)) * joint.height;
 		float cone_dist = glm::dot(b - joint.cone_origin, joint.axis_direction);
 		float cone_radius = (cone_dist / joint.height) * base_radius;
-
 		float orthogonal_dis = glm::length((b - joint.cone_origin) - cone_dist * joint.axis_direction);
+
+		//calculate world coords
+		//float base_radius_w = tan(glm::radians(joint.cone_angle)));
+		//float cone_dist_w = glm::dot(b * glm::inverse(boneA.local_coord_matrix) - joint.cone_origin * glm::inverse(boneA.local_coord_matrix), joint.axis_direction * glm::inverse(boneA.local_coord_matrix));
+		//float cone_radius_w = (cone_dist / joint.height * glm::inverse(boneA.local_coord_matrix)) * base_radius;
+		//float orthogonal_dis_w = glm::length((b - joint.cone_origin) - cone_dist * joint.axis_direction);
+
+
+
 
 		std::cout << "cone radius: " << cone_radius << " ortho: " << orthogonal_dis << "\n";
 		std::cout << "diff: " << (cone_radius - orthogonal_dis) << "\n";
 		if (abs(orthogonal_dis) >= cone_radius) {
+			//important: length from origin to point has to be constant
 			std::cout << "ball joint violation\n";
 			std::cout << "diff: " << (cone_radius - orthogonal_dis) << "\n";
 			std::cout << "between a and b: " << glm::length(particles[joint.ref_b].position - particles[joint.ref_a].position) << "\n";
 			//TODO: improve functionallity
+
+			float result = sqrt((pow(b.z - joint.cone_origin.z, 2) / pow(cone_radius, 2) - pow(b.x - joint.cone_origin.x, 2)));
+			float new_y_plus = joint.cone_origin.y + result;
+			float new_y_negative = joint.cone_origin.y - result;
+			std::cout << "p1: " << glm::to_string(b) << "\n";
+			std::cout << "new y: " << new_y_plus << "\n";
+			std::cout << "new y: " << new_y_negative << "\n";
+			Particle joint_constraint_particle;
+			joint_constraint_particle.position = world_coord(glm::vec4(b.x, new_y_plus+1, b.z, 1), boneA.local_coord_matrix);
+			
+			// cone_radius and orthogonal_distance are not in world coordinate scale?!
+
+			//satisfy_constraints(particles[joint.ref_b], joint_constraint_particle,0);
+
 			glm::vec4 refBForce = get_force_for_spring(	particles[joint.ref_b], particles[joint.ref_a], 
-														glm::length(particles[joint.ref_b].position - particles[joint.ref_a].position) + abs(cone_radius-orthogonal_dis)/3.0f, 1000, 20);
+														glm::length(particles[joint.ref_b].position - particles[joint.ref_a].position) + abs(cone_radius-orthogonal_dis)/3.0f, 200, 20);
 			forces[joint.ref_b] = forces[joint.ref_b] + refBForce;
 		}
 	
@@ -200,12 +228,14 @@ private:
 			}
 
 
+			satisfy_constraints(particles[joint.ref_b], line_constraint_particle, 0/*glm::length(particles[joint.ref_a].position - line_constraint_particle.position) * 1.03*/);
 			// todo fix ref A constraint violation
-			glm::vec4 refBForce = get_force_for_spring(	particles[joint.ref_b], line_constraint_particle, 
-														0, 1000, 20);
-			glm::vec4 refAForce = get_force_for_spring(	particles[joint.ref_a], line_constraint_particle, 
-														abs(glm::length(particles[joint.ref_a].position - line_constraint_particle.position)), 1000, 20);
-			forces[joint.ref_b] = forces[joint.ref_b] + refBForce;
+			//glm::vec4 refBForce = get_force_for_spring(	particles[joint.ref_b], line_constraint_particle, 
+					//									0, 1000, 20);
+
+			//glm::vec4 refAForce = get_force_for_spring(	particles[joint.ref_a], line_constraint_particle, 
+														//abs(glm::length(particles[joint.ref_a].position - line_constraint_particle.position)), 1000, 20);
+			//forces[joint.ref_b] = forces[joint.ref_b] + refBForce;
 		}
 
 
@@ -241,9 +271,9 @@ private:
 		}
 	}
 	
-	glm::vec4 get_strut_forces_on_particle(Particle particle, int index) {
-		glm::vec4 total_strut_force = glm::vec4(0, -9.8, 0, 0) + particle.velocity * -0.05f;
-
+	glm::vec4 get_strut_forces_on_particle(Particle &particle, int index) {
+		glm::vec4 total_strut_force = glm::vec4(0, -9.8, 0, 0)*particle.mass /* + particle.velocity * -0.05f*/;
+		bool immovable = false;
 		//glm::vec4 total_strut_force = glm::vec4(0, 0, 0, 0);
 		float stiffness = 100000;
 		float dampness = 500;
@@ -251,10 +281,12 @@ private:
 			Joint joint = joints[joint_index];
 			for (auto constraint : joint.particle_constraints) {
 				if (constraint.index1 == index) {
-					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index2], constraint.length, stiffness, dampness);
+					//total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index2], constraint.length, stiffness, dampness);
+					satisfy_constraints(particle, particles[constraint.index2], constraint.length);
 				}
 				else if (constraint.index2 == index) {
-					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index1], constraint.length, stiffness, dampness);
+					//total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index1], constraint.length, stiffness, dampness);
+					satisfy_constraints(particle, particles[constraint.index1], constraint.length);
 				}
 			}
 		}
@@ -263,16 +295,51 @@ private:
 			//std::cout << "curr_index: " << index << "\n";
 			for (auto constraint : bones[bone_index].particle_constraints) {
 				if (constraint.index1 == index) {
-					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index2], constraint.length, stiffness, dampness);
+					//total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index2], constraint.length, stiffness, dampness);
+					satisfy_constraints(particle, particles[constraint.index2], constraint.length);
 				}
 				else if (constraint.index2 == index) {
-					total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index1], constraint.length, stiffness, dampness);
+					//total_strut_force = total_strut_force + get_force_for_spring(particle, particles[constraint.index1], constraint.length, stiffness, dampness);
+					satisfy_constraints(particle, particles[constraint.index1], constraint.length);
 				}
 			}
 
 
 		}
 		return total_strut_force;
+	}
+
+	//TODO: credit paper: Thomas Jakobsen
+	void satisfy_constraints(Particle &particle1, Particle& particle2, float rest_length) {
+	
+		
+		glm::vec4 delta;
+		if (particle1.position == particle2.position) {
+			delta = glm::vec4(0.01, 0.01, 0.01, 0);
+		}
+		else {
+			delta = particle1.position - particle2.position;
+		}
+		//std::cout << glm::to_string(delta) << "\n";
+		float delta_length = sqrt(glm::dot(delta.xyz(), delta.xyz()));
+		float diff = (delta_length - rest_length) / (delta_length * ((1 / particle1.mass) + (1 / particle2.mass)));
+		//if (abs(delta_length - rest_length) > 0 &&) {
+		if(particle2.mass == 0) {
+			std::cout << "p1 pos: " << glm::to_string(particle1.position) << "\n";
+			std::cout << "delta: " << glm::to_string(delta) << "\n";
+			std::cout << "delta length: " << delta_length << "\n";
+			std::cout << "rest length: " << rest_length << "\n";
+			std::cout << diff << "\n";
+			particle1.position = particle1.position - (1 / particle1.mass) *delta * diff;
+			std::cout << "p1 pos after: " << glm::to_string(particle1.position) << "\n";
+		}
+		else {
+
+			particle1.position = particle1.position - (1 / particle1.mass) * delta * diff;
+		}
+
+		//particle2.position = particle2.position - (1/particle2.mass)*delta * diff; 
+
 	}
 	
 	glm::vec4 get_force_for_spring(Particle particle1, Particle particle2, float rest_length, float stiffness_val, float damping_val) {
@@ -331,6 +398,11 @@ private:
 					new_particle.velocity = glm::vec4(0.0, 0.0, 0.0, 0.0);
 					std::cout << glm::to_string(new_particle.position) << "\n";
 					last_positions.push_back(((new_particle.position - new_particle.velocity * time_step) + new_particle.velocity * time_step));
+					if (particles.size() == 1)
+						new_particle.mass = 3;
+					else
+						new_particle.mass = 1;
+	
 					particles.push_back(new_particle);
 				}
 				if (load_state == 1 && inputNums.size() == 4) {
@@ -441,7 +513,7 @@ private:
 
 		glm::vec4 a;
 		glm::vec4 b;
-		
+	
 		glm::vec4 ref_joint = particles[joint.particles[0]].position;
 		for (int i = 0; i < boneA.particles.size(); i++) {
 			bool is_hinge = false;
@@ -532,19 +604,6 @@ private:
 			used[min_j] = true;
 			smallest = 10000;
 		}
-		/*if (new_joint.particles.size() == 2 && new_joint.cone_angle == 77.0f) {
-			// this is a fixed joint, no movement
-			std::cout << "fuse joint!\n";
-			for (int i = 0; i < bone1.particles.size(); i++) 
-			{
-				glm::vec4 spring_length = particles[bone1.particles[i]].position - particles[bone2.particles[i]].position;
-				particles[bone1.particles[i]].joints.push_back(joints.size());
-				particles[bone2.particles[i]].joints.push_back(joints.size());
-				new_joint.particles.push_back(bone1.particles[i]);
-				new_joint.particles.push_back(bone2.particles[i]);
-				new_joint.particle_constraints.push_back(get_spring_constraint(spring_length, bone1.particles[i], bone2.particles[i]));
-			}
-		}*/
 
 		if (new_joint.particles.size() == 4)
 			create_hinge_rotation_planes(new_joint);

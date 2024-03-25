@@ -25,5 +25,5 @@ bone 8 9 10 11
 bone 12 13 14 15
 
 joint 0 1 2 80 -10 
-joint 1 2 1 45
+joint 1 2 1 85
 joint 2 3 2 45 -50

@@ -9,8 +9,7 @@ particle 1 4 -1
 particle -1 4 -1
 particle 0 4 0
 
-
-bone 0 1 2 3
-bone 4 5 6 3
+bone 0 1 2 3 0 0 0 1.1 1.1 1.1
+bone 4 5 6 3 0 0 0 1 1 1
 
 joint 0 1 1 45

@@ -151,6 +151,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\headers\Plane.h" />
     <ClInclude Include="include\headers\ragdoll.h" />
     <ClInclude Include="include\headers\Ragdoll_Simulator.h" />
     <ClInclude Include="include\learnopengl\Animation.h" />

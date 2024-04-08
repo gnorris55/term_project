@@ -15,6 +15,7 @@
 #include <learnopengl/Raw_Model.h>
 #include <headers/ragdoll.h>
 #include <headers/Ragdoll_Simulator.h>
+#include <headers/Plane.h>
 
 #include <iostream>
 
@@ -65,29 +66,37 @@ int main()
     glfwSetScrollCallback(window, scroll_callback);
 
     // tell GLFW to capture our mouse
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    // glad: load all OpenGL function pointers
-    // ---------------------------------------
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
+	// glad: load all OpenGL function pointers
+	// ---------------------------------------
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD" << std::endl;
+		return -1;
+	}
 
-    // tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
-    stbi_set_flip_vertically_on_load(true);
+	// tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
+	stbi_set_flip_vertically_on_load(true);
 
-    // configure global opengl state
-    // -----------------------------
-    glEnable(GL_DEPTH_TEST);
+	// configure global opengl state
+	// -----------------------------
+	glEnable(GL_DEPTH_TEST);
 
-    // build and compile shaders
-    // -------------------------
-    Shader ourShader("default_shader.vs", "default_fragment_shader.fs");
+	// build and compile shaders
+	// -------------------------
+	Shader ourShader("default_shader.vs", "default_fragment_shader.fs");
 
-    Ragdoll in_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "hinge-test.txt", &ourShader);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //Ragdoll in_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "one-bone.txt", &ourShader);
+    //Plane_object
+    Ragdoll in_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "skeleton.txt", &ourShader);
+    //Ragdoll in_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "ball-joint-test.txt", &ourShader);
+    //Ragdoll in_ragdoll = Ragdoll(glm::vec4(0, 0, 0, 0), "hinge-test.txt", &ourShader);
+    Plane test_plane1 = Plane(glm::vec4(10, -40, 0, 1), glm::vec4(-1, 1, 0, 0), &in_ragdoll, &ourShader);
+    Plane test_plane = Plane(glm::vec4(10, -40, 0, 1), glm::vec4(1, 1, 0, 0), &in_ragdoll, &ourShader);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -101,7 +110,7 @@ int main()
         // input
         // -----
         processInput(window);
-
+        
         // render
         // ------
         glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
@@ -119,6 +128,8 @@ int main()
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
+        test_plane1.detect_collisions();
+        test_plane.detect_collisions();
         in_ragdoll.draw_bones(currentFrame);
 
         glfwSwapBuffers(window);

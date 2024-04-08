@@ -1,29 +1,41 @@
 //hinge test
+//0
 particle 0 0 1
+//1
 particle 0 0 -1
+//2
 particle 0 2 0
+//3
 particle -3 0 0
 
-particle 0 0 1 
-particle 0 0 -1
-particle 0.01 2 0
+//4
+particle 0 2 0
+//5
 particle 3 0 0
 
-particle 3 0 0
-particle 4 1 1
-particle 4 1 -1
-particle 4 0 0 
 
+//6
+particle 4 0 0
+//7
 particle 4 1 1
+//8
 particle 4 1 -1
-particle 4.01 0 0 
-particle 6 0 0
+
+
+//5
+//particle 4 1 -1
+//6
+//particle 4 0 0 
+
+//7 
+//particle 6 0 0
 
 bone 0 1 2 3
-bone 4 5 6 7
-bone 8 9 10 11
-bone 12 13 14 15
+bone 0 1 4 5
+bone 5 6 7 8
+//bone 8 9 10 11
+//bone 12 13 14 15
 
-joint 0 1 2 80 -10 
-joint 1 2 1 85
-joint 2 3 2 45 -50
+joint 0 1 2 45 -45 
+joint 1 2 1 30
+//joint 2 3 2 45 -50

@@ -1,22 +1,130 @@
 skeleton
-particle -3 0 0
-particle 0 0 1
-particle 0 0 -1
+//left hip
+//0
 particle 0 2 0
+//1
+particle 0 0 1
+//2
+particle 0 0 -1
+//3
+particle -3 0 0
 
+
+//right hip
+//4
 particle 3 0 0
-particle 0.01 0 1 
-particle 0.01 0 -1
-particle 0.01 2 0
 
-particle 0 2.01 0
-particle 1 3 1
-particle -1 3 1
-particle 0 3 -1 
+// left leg
+//5
+particle -3 -5 0
+//6
+particle -2.5 -5 -1
+//7
+particle -3.5 -5 -1
 
-bone 0 1 2 3 
-bone 4 5 6 7
-bone 8 9 10 11
+// 8
+particle -3 -5 0
+//9
+particle -3 -10 0 
 
-joint 0 1 3
-joint 1 2 1
+
+//right leg
+//10
+particle 3 -5 0
+//11
+particle 2.5 -5 -1
+//12
+particle 3.5 -5 -1
+
+//13
+particle 3 -5 0
+//14
+particle 3 -10 0
+
+//upper body
+//15
+particle -3.5 10 -1
+//16
+particle 3.5 10 -1
+//17
+particle 0 10 0
+
+//left arm upper
+//18
+particle -8 10 -1
+//19
+particle -8 10.5 -1.5
+//20
+particle -8 9.5 -1.5
+
+//right arm upper
+//21
+particle 8 10 -1
+//22
+particle 8 10.5 -1.5
+//23
+particle 8 9.5 -1.5
+
+
+//left arm lower
+//24
+particle -8 10 -1
+//25
+particle -13 10 -1.5
+
+//left arm lower
+//26
+particle 8 10 -1
+//27
+particle 13 10 -1.5
+
+//traps
+//28
+particle 0 10.5 0
+
+//neck
+//29
+particle 0 11.5 0
+//30
+particle -0.5 11.5 -1
+//31
+particle 0.5 11.5 -1
+
+//head
+//32
+particle 0 13.5 0
+
+//left hip bone: 0
+bone 0 1 2 3 0 0 0 1 1 0.5 
+//right hip bone: 1
+bone 0 1 2 4 0 0 0 1 1 0.5
+// left leg bone: 2, 3
+bone 3 5 6 7 0 0 0.5 1 1 1
+bone 6 7 8 9 0 0 0.5 1 1 1
+//right leg bone: 4, 5
+bone 4 10 11 12 0 0 0.5 1 1 1
+bone 11 12 13 14 0 0 0.5 1 1 1
+//upper body: 6
+bone 0 15 16 17 0 0 1 0.75 1 2
+//left arm: 7 
+bone 15 18 19 20 0 0 0 1 1 1
+//right arm: 8
+bone 16 21 22 23 0 0 0 1 1 1
+// left arm lower: 9
+bone 19 20 24 25 0 0 0 1 1 1
+// right arm upper: 10
+bone 22 23 26 27 0 0 0 1 1 1
+//traps: 11
+bone 15 16 17 28 0 0 1 0.45 1 2
+// neck: 12
+bone 28 29 30 31 0 0 0 1 1 1
+//head
+bone 29 30 31 32 0 0 1 3 1 3 
+
+joint 2 3 2 0 -45 
+joint 4 5 2 45 -0.1
+joint 7 9 2 45 -45
+joint 8 10 2 45 -45
+//joint 1 6 1 45
+//joint 0 2 1 45
+//joint 1 3 1 45

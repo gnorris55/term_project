@@ -1,56 +1,113 @@
 ﻿  main.cpp
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(109,20): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(182,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(217,10): warning C4101: 'length': unreferenced local variable
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(409,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(161,20): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(128,20): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(210,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(248,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(299,10): warning C4101: 'length': unreferenced local variable
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(381,17): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(468,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(409,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(468,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(410,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(469,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(410,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(469,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(411,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(470,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(411,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(470,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(412,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(471,27): warning C4244: 'argument': conversion from '_Ty' to 'const unsigned __int64', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(412,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
-          with
-          [
-              _Ty=int
-          ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(598,49): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
-          with
-          [
-              _Ty=int
-          ]
-C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(599,49): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\ragdoll.h(471,56): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
           with
           [
               _Ty=int
           ]
 C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\Ragdoll_Simulator.h(18,7): warning C4552: '*': result of expression not used
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\Plane.h(120,7): warning C4101: 'ref_pointB': unreferenced local variable
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\Plane.h(119,7): warning C4101: 'ref_pointA': unreferenced local variable
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\Plane.h(192,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\tuple(144,47): warning C4244: 'initializing': conversion from 'float' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\tuple(317,102): message : see reference to function template instantiation 'std::_Tuple_val<_This>::_Tuple_val<float&>(_Other)' being compiled
+          with
+          [
+              _This=int,
+              _Other=float &
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\tuple(363,16): message : see reference to function template instantiation 'std::tuple<int,int>::tuple<std::_Exact_args_t,float&,float&,0>(_Tag,_This2,float &)' being compiled
+          with
+          [
+              _Tag=std::_Exact_args_t,
+              _This2=float &
+          ]
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\Plane.h(126,66): message : see reference to function template instantiation 'std::tuple<int,int>::tuple<float&,float&,0>(_This2,float &) noexcept' being compiled
+          with
+          [
+              _This2=float &
+          ]
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\Plane.h(126,44): message : see the first reference to 'std::tuple<int,int>::tuple' in 'Plane::get_collision_normal'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\tuple(144,47): warning C4244: 'initializing': conversion from '_Ty' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+          and
+          [
+              _Ty=float
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\tuple(317,102): message : see reference to function template instantiation 'std::_Tuple_val<_This>::_Tuple_val<_Ty>(_Other &&)' being compiled
+          with
+          [
+              _This=float,
+              _Ty=int,
+              _Other=int
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\tuple(1004,12): message : see reference to function template instantiation 'std::tuple<float,float>::tuple<std::_Exact_args_t,int,int,0>(_Tag,_This2 &&,int &&)' being compiled
+          with
+          [
+              _Tag=std::_Exact_args_t,
+              _This2=int
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\tuple(324,16): message : see reference to function template instantiation 'std::tuple<float,float>::tuple<std::_Unpack_tuple_t,_Ty,0,1,0>(_Tag,_Tpl &&,std::integer_sequence<size_t,0,1>)' being compiled
+          with
+          [
+              _Ty=std::tuple<int,int>,
+              _Tag=std::_Unpack_tuple_t,
+              _Tpl=std::tuple<int,int>
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\tuple(390,16): message : see reference to function template instantiation 'std::tuple<float,float>::tuple<std::_Unpack_tuple_t,std::tuple<int,int>,0>(_Tag,_Tpl &&)' being compiled
+          with
+          [
+              _Tag=std::_Unpack_tuple_t,
+              _Tpl=std::tuple<int,int>
+          ]
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\Plane.h(126,44): message : see reference to function template instantiation 'std::tuple<float,float>::tuple<int,int,0>(std::tuple<int,int> &&) noexcept' being compiled
+C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\include\headers\Plane.h(126,44): message : see the first reference to 'std::tuple<float,float>::tuple' in 'Plane::get_collision_normal'
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Term project.vcxproj -> C:\Users\graem\Desktop\Graphics\CSC 473\Project\Term project\x64\Debug\Term project.exe
